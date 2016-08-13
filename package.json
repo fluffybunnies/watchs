@@ -1,0 +1,26 @@
+{
+	"name": "kitt",
+	"version": "0.0.0",
+	"description": "Use nodebash command to watch the next episode of your favorite show",
+	"keywords": [
+		"watch",
+		"tv",
+		"find",
+		"stream"
+	],
+	"author": "fluffybunnies",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:fluffybunnies/watchs.git"
+	},
+	"homepage": "https://github.com/fluffybunnies/watchs",
+	"bugs": {
+		"url": "https://github.com/fluffybunnies/watchs/issues"
+	},
+	"main": "index.js",
+	"dependencies": {
+	},
+	"devDependencies": {
+	}
+}
