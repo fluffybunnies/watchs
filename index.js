@@ -18,18 +18,18 @@ var http = require('http')
 ,Url = require('url')
 ,cp = require('child_process')
 ,fs = require('fs')
-,argsMemFile = __dirname+'/.watch~'
+,argsMemFile = __dirname+'/.watchs'
 
 
 loadArgs(function(err,argv){
 	if (err) return console.error(err)
 	argv.forEach(function(arg){
-		if (arg.indexOf('-') != 0)
+		var m = arg.match(/(s|e)([0-9]+)/)
+		if (!m)
 			return series = arg
-		var argVal = arg.substr(2)
-		switch (arg.substr(1,1)) {
-			case 's': season = argVal; break
-			case 'e': episode = argVal; break
+		switch (m[1]) {
+			case 's': season = m[2]; break
+			case 'e': episode = m[2]; break
 		}
 	})
 	if (process.argv[2] == 'next') ++episode
@@ -101,13 +101,16 @@ function loadArgs(cb){
 	var args = process.argv.slice(2)
 	if (args[0] && args[0] != 'next') return process.nextTick(function(){ cb(false,args) })
 	fs.readFile(argsMemFile,function(err,data){
-		if (err && err.code != 'ENOENT') return cb(false,args);
-		try {
-			var savedArgs = JSON.parse(data)
-			if (!Array.isArray(savedArgs)) throw 'saved args not an array'
-			args = savedArgs
-		} catch (e) {
-			console.warn('unable to load saved args',e)
+		if (err) {
+			if (err.code != 'ENOENT') console.warn('could not open state file', err)
+		} else {
+			try {
+				var savedArgs = JSON.parse(data)
+				if (!Array.isArray(savedArgs)) throw 'saved args not an array'
+				args = savedArgs
+			} catch (e) {
+				console.warn('unable to load saved args',e)
+			}
 		}
 		cb(false,args)
 	})
